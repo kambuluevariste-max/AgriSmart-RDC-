@@ -1,0 +1,268 @@
+{
+  "entities": {
+    "UserPublicProfile": {
+      "title": "UserPublicProfile",
+      "description": "Publicly visible agricultural actor profile without PII.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "role": {
+          "type": "string",
+          "enum": ["agriculteur", "acheteur", "vendeur", "fournisseur", "cooperative", "transporteur", "expert", "investisseur", "administrateur"]
+        },
+        "province": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "maxLength": 80 },
+        "sector": { "type": "string", "maxLength": 80 },
+        "activityType": { "type": "string", "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 600 },
+        "photoUrl": { "type": "string", "maxLength": 50000 },
+        "language": { "type": "string", "enum": ["fr", "ln", "sw", "kg", "lua"] },
+        "ratingAvg": { "type": "number" },
+        "ratingCount": { "type": "integer" },
+        "isPublic": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "role", "province", "city", "isPublic", "createdAt", "updatedAt"]
+    },
+    "AppIdentity": {
+      "title": "AppIdentity",
+      "description": "Global AgriSmart-RDC brand identity locked after single admin logo customization.",
+      "type": "object",
+      "properties": {
+        "logoUrl": { "type": "string", "maxLength": 300000 },
+        "logoChanged": { "type": "boolean" },
+        "changedBy": { "type": "string", "maxLength": 160 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["logoUrl", "logoChanged", "changedBy", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated PII for user account (owner and admin only).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "maxLength": 160 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "accountVerified": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Agricultural product or input listing in marketplace.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerName": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "kind": { "type": "string", "enum": ["harvest", "input"] },
+        "title": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 1200 },
+        "category": { "type": "string", "maxLength": 60 },
+        "price": { "type": "number" },
+        "currency": { "type": "string", "enum": ["CDF", "USD"] },
+        "unit": { "type": "string", "maxLength": 30 },
+        "quantityAvailable": { "type": "number" },
+        "province": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "maxLength": 80 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "moderationStatus": { "type": "string", "enum": ["pending", "published", "sold", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "sellerName", "kind", "title", "category", "price", "currency", "unit", "quantityAvailable", "province", "city", "moderationStatus", "createdAt", "updatedAt"]
+    },
+    "Equipment": {
+      "title": "Equipment",
+      "description": "Agricultural machine available for rental.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerName": { "type": "string", "maxLength": 100 },
+        "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "equipmentType": { "type": "string", "maxLength": 60 },
+        "dailyRate": { "type": "number" },
+        "currency": { "type": "string", "enum": ["CDF", "USD"] },
+        "province": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "maxLength": 80 },
+        "available": { "type": "boolean" },
+        "description": { "type": "string", "maxLength": 1000 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "moderationStatus": { "type": "string", "enum": ["pending", "published", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "ownerName", "name", "equipmentType", "dailyRate", "currency", "province", "city", "available", "moderationStatus", "createdAt", "updatedAt"]
+    },
+    "EquipmentBooking": {
+      "title": "EquipmentBooking",
+      "description": "Rental booking request for agricultural machinery.",
+      "type": "object",
+      "properties": {
+        "equipmentId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "equipmentName": { "type": "string", "maxLength": 120 },
+        "renterId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "startDate": { "type": "string", "maxLength": 30 },
+        "days": { "type": "integer" },
+        "totalAmount": { "type": "number" },
+        "currency": { "type": "string", "enum": ["CDF", "USD"] },
+        "status": { "type": "string", "enum": ["requested", "confirmed", "active", "completed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["equipmentId", "renterId", "ownerId", "startDate", "days", "totalAmount", "currency", "status", "createdAt", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Agricultural product or input order.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productTitle": { "type": "string", "maxLength": 120 },
+        "buyerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "transporterId": { "type": "string", "maxLength": 128 },
+        "quantity": { "type": "number" },
+        "totalPrice": { "type": "number" },
+        "currency": { "type": "string", "enum": ["CDF", "USD"] },
+        "deliveryAddress": { "type": "string", "maxLength": 240 },
+        "status": { "type": "string", "enum": ["nouvelle", "confirmee", "en_preparation", "en_livraison", "livree", "annulee"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "productTitle", "buyerId", "sellerId", "quantity", "totalPrice", "currency", "deliveryAddress", "status", "createdAt", "updatedAt"]
+    },
+    "Delivery": {
+      "title": "Delivery",
+      "description": "Delivery task for transporters.",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "buyerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "transporterId": { "type": "string", "maxLength": 128 },
+        "origin": { "type": "string", "maxLength": 120 },
+        "destination": { "type": "string", "maxLength": 120 },
+        "transportCost": { "type": "number" },
+        "currency": { "type": "string", "enum": ["CDF", "USD"] },
+        "status": { "type": "string", "enum": ["available", "accepted", "in_transit", "delivered", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderId", "buyerId", "sellerId", "origin", "destination", "status", "createdAt", "updatedAt"]
+    },
+    "FarmRecord": {
+      "title": "FarmRecord",
+      "description": "Farmer notebook record (crops, expenses, revenues, stocks).",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "recordType": { "type": "string", "enum": ["crop", "expense", "revenue", "stock"] },
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "category": { "type": "string", "maxLength": 60 },
+        "amount": { "type": "number" },
+        "quantity": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 30 },
+        "areaHa": { "type": "number" },
+        "date": { "type": "string", "maxLength": 30 },
+        "harvestDate": { "type": "string", "maxLength": 30 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "recordType", "title", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Private 1-to-1 conversation between two users.",
+      "type": "object",
+      "properties": {
+        "participantA": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantB": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "lastMessage": { "type": "string", "maxLength": 300 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participantA", "participantB", "updatedAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Message inside a private conversation.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantA": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "participantB": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "participantA", "participantB", "text", "createdAt"]
+    },
+    "CommunityPost": {
+      "title": "CommunityPost",
+      "description": "Public agricultural community post.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "enum": ["Agriculture", "Élevage", "Transformation", "Conseils", "Questions et réponses", "Innovations agricoles"] },
+        "content": { "type": "string", "minLength": 2, "maxLength": 2000 },
+        "likesCount": { "type": "integer" },
+        "moderationStatus": { "type": "string", "enum": ["published", "reported", "hidden"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "category", "content", "likesCount", "moderationStatus", "createdAt"]
+    },
+    "FundingApplication": {
+      "title": "FundingApplication",
+      "description": "Agricultural financing application submitted by user.",
+      "type": "object",
+      "properties": {
+        "applicantId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "projectTitle": { "type": "string", "minLength": 3, "maxLength": 140 },
+        "institution": { "type": "string", "maxLength": 120 },
+        "requestedAmount": { "type": "number" },
+        "currency": { "type": "string", "enum": ["CDF", "USD"] },
+        "summary": { "type": "string", "maxLength": 1200 },
+        "status": { "type": "string", "enum": ["submitted", "under_review", "approved", "declined"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["applicantId", "projectTitle", "institution", "requestedAmount", "currency", "status", "createdAt", "updatedAt"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "Help, issue report, or listing moderation report.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ticketType": { "type": "string", "enum": ["support", "report_listing", "report_post"] },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "subject": { "type": "string", "minLength": 3, "maxLength": 140 },
+        "details": { "type": "string", "minLength": 5, "maxLength": 1200 },
+        "status": { "type": "string", "enum": ["open", "resolved"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "ticketType", "subject", "details", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": { "$ref": "#/entities/UserPublicProfile" }, "description": "Public user profiles" },
+    "/users/{userId}/private/{docId}": { "schema": { "$ref": "#/entities/UserPrivateInfo" }, "description": "Isolated user PII" },
+    "/products/{productId}": { "schema": { "$ref": "#/entities/Product" }, "description": "Agricultural marketplace products and inputs" },
+    "/equipment/{equipmentId}": { "schema": { "$ref": "#/entities/Equipment" }, "description": "Agricultural machines for rent" },
+    "/equipmentBookings/{bookingId}": { "schema": { "$ref": "#/entities/EquipmentBooking" }, "description": "Machine rental bookings" },
+    "/orders/{orderId}": { "schema": { "$ref": "#/entities/Order" }, "description": "Agricultural orders" },
+    "/deliveries/{deliveryId}": { "schema": { "$ref": "#/entities/Delivery" }, "description": "Transport deliveries" },
+    "/farmRecords/{recordId}": { "schema": { "$ref": "#/entities/FarmRecord" }, "description": "Offline-capable farm notebook records" },
+    "/conversations/{conversationId}": { "schema": { "$ref": "#/entities/Conversation" }, "description": "Private user conversations" },
+    "/conversations/{conversationId}/messages/{messageId}": { "schema": { "$ref": "#/entities/Message" }, "description": "Conversation messages" },
+    "/communityPosts/{postId}": { "schema": { "$ref": "#/entities/CommunityPost" }, "description": "Community posts" },
+    "/fundingApplications/{applicationId}": { "schema": { "$ref": "#/entities/FundingApplication" }, "description": "Financing applications" },
+    "/supportTickets/{ticketId}": { "schema": { "$ref": "#/entities/SupportTicket" }, "description": "Support & moderation tickets" },
+    "/appConfig/{configId}": { "schema": { "$ref": "#/entities/AppIdentity" }, "description": "Single-change global app logo configuration" }
+  }
+}

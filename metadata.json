@@ -1,0 +1,6 @@
+{
+  "name": "AgriSmart-RDC",
+  "description": "La technologie au service de l’agriculture congolaise : plateforme agricole, marketplace, carnet d'exploitation hors connexion, météo, diagnostic et logistique en RDC.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
